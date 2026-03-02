@@ -56,7 +56,7 @@ def make_parser():
     parser.add_argument("--gt-type", type=str, default="_val_half", help="suffix to find the gt annotation")
     parser.add_argument("--mot20", dest="mot20", default=False, action="store_true", help="test mot20.")
     parser.add_argument("--public", action="store_true", help="use public detection")
-    parser.add_argument("--nsva", action="store_true", help="use NSVA for evaluation")
+    parser.add_argument("--mupnit", action="store_true", help="use MuPNIT for evaluation")
     parser.add_argument("--use_hybrid", action="store_true", help="Use HybridSORT with ReID")
     parser.add_argument('--asso', default="iou", help="similarity function: iou/giou/diou/ciou/ctdis")
     parser.add_argument("--use_byte", dest="use_byte", default=False, action="store_true", help="use byte in tracking.")
@@ -76,7 +76,7 @@ def make_parser():
     parser.add_argument("--use_global_linking", dest="use_global_linking", default=False, action="store_true", help="Links the prior embeddings with local ones")
     parser.add_argument("--use_age_with_gl", dest="use_age_with_gl", default=None, type=str, help="use age of a track when determinig which to link") # oldest, youngest
     parser.add_argument("--tracker_name", dest="tracker_name", default="ocsort", type=str, help="Which tracker to use") # oldest, youngest
-    parser.add_argument("--dataset", type=str, default="nsvav4", help="nsvav4, sportsmot or dancetrack")
+    parser.add_argument("--dataset", type=str, default="mupnit", help="mupnit")
     parser.add_argument("--video_name", type=str, default=None, help="Name of the demo video")
     parser.add_argument("--players_info_file", type=str, default=None, help="Path to players info file")
     

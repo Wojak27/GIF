@@ -9,11 +9,11 @@ import torch
 
 from loguru import logger
 
-from ap3d_reid.reid_eval import AP3DCLIPReID, AP3DReID
+from ap3d_reid.reid_eval import AP3DReID
 from clip_reid.reid_eval import CLIPExtraProjectionLayer, CLIPReID
 from trackers.ocsort_tracker.ocsort_ReID import OCSortReID
 from yolox.data.data_augment import preproc
-from yolox.evaluators.mot_evaluator_nsvatrackv3_ReID import group_gallery_like_text, load_gallery_features, load_text_features
+from yolox.evaluators.mot_evaluator_mupnit_ReID import group_gallery_like_text, load_gallery_features, load_text_features
 from yolox.exp import get_exp
 from yolox.utils import fuse_model, get_model_info, postprocess
 from yolox.utils.visualize import get_color, plot_tracking
@@ -154,8 +154,6 @@ def imageflow_demo(predictor, vis_folder, current_time, args):
                                 asso_func=args.asso, delta_t=args.deltat, inertia=args.inertia, use_byte=args.use_byte)
     if args.feature_extractor == "ap3d":
         encoder = AP3DReID(ckpt_path="models/best_model_ap3d.pth.tar")
-    elif args.feature_extractor == "both":
-        encoder = AP3DCLIPReID(ckpt_path="models/best_model_ap3d.pth.tar")
     else:
         encoder = CLIPReID(model_name="openai/clip-vit-large-patch14")
     

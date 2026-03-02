@@ -3,4 +3,4 @@
 # Copyright (c) Megvii, Inc. and its affiliates.
 
 from .coco_evaluator import COCOEvaluator
-from .mot_evaluator_nsvatrackv3_ReID import MOTEvaluator as MOTEvaluatorNSVATrackv3_ReID
+from .mot_evaluator_mupnit_ReID import MOTEvaluator as MOTEvaluatorMuPNIT_ReID

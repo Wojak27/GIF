@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+*.egg
+
+# YOLOX build artifacts
+yolox/_C*.so
+
+# Training outputs
+YOLOX_outputs/
+pretrained/
+
+# Model weights
+*.pth
+*.pth.tar
+
+# Demo outputs
+demo_videos/*.mp4
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db

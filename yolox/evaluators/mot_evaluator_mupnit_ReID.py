@@ -235,14 +235,8 @@ class MOTEvaluator:
         """
         assert self.args is not None, "args should not be None"
         args = self.args
-        if args.dataset == "nsvav4":
-            DATASET_ROOT = "/4TBSSD_Permanent/datasets/NSVATrackv3_30fps"
-        elif args.dataset == "sportsmot":
-            DATASET_ROOT = "datasets/SportsMOT/val"
-        elif args.dataset == "soccernet":
-            DATASET_ROOT = "/4TBSSD_Permanent/datasets/SoccerNET/data/tracking"
-        elif args.dataset == "soccernet2023":
-            DATASET_ROOT = "/4TBSSD_Permanent/datasets/SoccerNET/tracking-2023"
+        if args.dataset == "mupnit":
+            DATASET_ROOT = os.environ.get('MUPNIT_DATASET_ROOT', '/4TBSSD_Permanent/datasets/MuPNIT_30fps_global')
         cache_dir = f"{args.dataset}_cache_{args.yolo_model}_{args.feature_extractor}"
         reid_thresh = args.reid_thresh
         
@@ -324,7 +318,7 @@ class MOTEvaluator:
                         extra_clip_projection.load_state_dict(torch.load(args.clip_projection_weights, weights_only=True))
                         extra_clip_projection.eval()
                     
-                    ckt_file =  f"nsva_v3_detections_{args.yolo_model}/{video_name}_detection.pkl"
+                    ckt_file =  f"mupnit_detections_{args.yolo_model}/{video_name}_detection.pkl"
                     all_dets = []
                     # Not even faster...
                     if os.path.exists(ckt_file):
@@ -336,9 +330,9 @@ class MOTEvaluator:
                         all_dets = detections[video_name]
                     if video_id > 0:
                         prev_video_name = video_names[video_id - 1]
-                        if prev_video_name in detections and not os.path.exists(f"nsva_v3_detections_{args.yolo_model}/{prev_video_name}_detection.pkl"):
-                            os.makedirs(f"nsva_v3_detections_{args.yolo_model}", exist_ok=True)
-                            torch.save(detections[prev_video_name], f"nsva_v3_detections_{args.yolo_model}/{prev_video_name}_detection.pkl")
+                        if prev_video_name in detections and not os.path.exists(f"mupnit_detections_{args.yolo_model}/{prev_video_name}_detection.pkl"):
+                            os.makedirs(f"mupnit_detections_{args.yolo_model}", exist_ok=True)
+                            torch.save(detections[prev_video_name], f"mupnit_detections_{args.yolo_model}/{prev_video_name}_detection.pkl")
                     player_ids = None
                     gallery_feature = None
                     if evaluate_identification:

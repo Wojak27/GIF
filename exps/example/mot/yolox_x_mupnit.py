@@ -40,7 +40,7 @@ class Exp(MyExp):
         )
 
         dataset = MOTDataset(
-            data_dir="/4TBSSD_Permanent/datasets/MuPNIT_30fps_global",
+            data_dir=os.environ.get('MUPNIT_DATASET_ROOT', '/4TBSSD_Permanent/datasets/MuPNIT_30fps_global'),
             json_file=self.train_ann,
             name='',
             img_size=self.input_size,
@@ -95,7 +95,7 @@ class Exp(MyExp):
         from yolox.data import MOTDataset, ValTransform
 
         valdataset = MOTDataset(
-            data_dir="/4TBSSD_Permanent/datasets/MuPNIT_30fps_global",
+            data_dir=os.environ.get('MUPNIT_DATASET_ROOT', '/4TBSSD_Permanent/datasets/MuPNIT_30fps_global'),
             json_file=self.val_ann,
             img_size=self.test_size,
             name='',

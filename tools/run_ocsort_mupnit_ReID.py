@@ -7,7 +7,7 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 from yolox.core import launch
 from yolox.exp import get_exp
 from yolox.utils import configure_nccl, fuse_model, get_local_rank, get_model_info, setup_logger
-from yolox.evaluators import MOTEvaluatorNSVATrackv3_ReID as MOTEvaluator
+from yolox.evaluators import MOTEvaluatorMuPNIT_ReID as MOTEvaluator
 import json
 
 from utils.args import make_parser
@@ -19,48 +19,23 @@ import motmetrics as mm
 from collections import OrderedDict
 from pathlib import Path
 
-def get_gt_files(split_files, split_type, root_dir):
+def get_gt_files(split, root_dir):
     """
-    Get ground truth file paths based on the split configurations.
+    Get ground truth file paths for all sequences in a split.
 
     Args:
-        split_files (list): List of paths to the split JSON files (e.g., ['short_split.json', 'long_split.json']).
-        split_type (str): Type of split (e.g., 'train', 'test', 'val').
-        root_dir (str): Root directory of the dataset.
+        split (str): Split name (e.g., 'train', 'val', 'test').
+        root_dir (str): Root directory of the MuPNIT dataset.
 
     Returns:
         list: List of paths to ground truth files.
     """
     gt_files = []
-
-    for split_file in split_files:
-        # Read the split file
-        split_path = os.path.join(root_dir, split_file)
-        with open(split_path, 'r') as f:
-            split_data = json.load(f)
-        
-        # Get the video IDs for the specified split
-        video_ids = split_data[split_type]
-        
-        # Directories to search for videos
-        search_dirs = {
-            'short': os.path.join(root_dir, 'short_MOTann_200'),
-            'long': os.path.join(root_dir, 'long_MOTann_10')
-        }
-        
-        for video_id in video_ids:
-            # Search in both 'short' and 'long' directories
-            for dir_type in ['short', 'long']:
-                dir_path = search_dirs[dir_type]
-                # Get all directories in the search directory
-                for folder in os.listdir(dir_path):
-                    # Check if the video ID is part of the folder name
-                    if video_id in folder:
-                        # Construct the path to the ground truth file
-                        gt_path = os.path.join(dir_path, folder, 'gt', 'gt.txt')
-                        if os.path.isfile(gt_path):
-                            gt_files.append(gt_path)
-    
+    split_dir = os.path.join(root_dir, split)
+    for seq_name in sorted(os.listdir(split_dir)):
+        gt_path = os.path.join(split_dir, seq_name, 'gt', 'gt.txt')
+        if os.path.isfile(gt_path):
+            gt_files.append(gt_path)
     return gt_files
 
 
@@ -228,11 +203,10 @@ def main(exp, args, num_gpu):
         trt_file = None
         decoder = None
         
-    root_dir = '/4TBSSD_Permanent/datasets/MuPNIT_30fps_global'
-    split_files = ['short_split.json', 'long_split.json']
-    split_type = 'test'
-    
-    gtfiles = get_gt_files(split_files, split_type, root_dir)
+    root_dir = os.environ.get('MUPNIT_DATASET_ROOT', '/4TBSSD_Permanent/datasets/MuPNIT_30fps_global')
+    split_type = 'val'
+
+    gtfiles = get_gt_files(split_type, root_dir)
     gt = OrderedDict([(Path(f).parts[-3], mm.io.loadtxt(f, fmt='mot15-2D', min_confidence=1)) for f in gtfiles])
 
         
@@ -298,8 +272,6 @@ def main(exp, args, num_gpu):
     summary = mh.compute_many(accs, names=names, metrics=metrics, generate_overall=True)
     print(mm.io.render_summary(summary, formatters=mh.formatters, namemap=mm.io.motchallenge_metric_names))
     logger.info('Completed')
-    # Start evaluation with hota, run from python a script through the command line
-    # os.system('python TrackEval/scripts/run_mot_challenge.py --SPLIT_TO_EVAL test  --METRICS HOTA CLEAR Identity  --GT_FOLDER /4TBSSD_Permanent/datasets/NSVATrackv3 --SKIP_SPLIT_FOL True   --TRACKERS_TO_EVAL /4TBSSD_Permanent/code/OC_SORT/YOLOX_outputs/NsvaTrackv3Train  --TRACKER_SUB_FOLDER NsvaTrackv3Train_val  --PLOT_CURVES False --TRACKERS_FOLDER '' --SEQMAP_FILE /4TBSSD_Permanent/datasets/NSVATrackv3/seqmap_test.txt')
 
 
 if __name__ == "__main__":

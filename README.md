@@ -99,22 +99,34 @@ mkdir pretrained
   <br><em>MuPNIT shows the largest re-association gap and bounding box size deviation compared to existing MOT datasets.</em>
 </p>
 
-The MuPNIT dataset should be in MOT/COCO format with the following structure:
+Set the environment variable to point to the dataset root:
+
+```bash
+export MUPNIT_DATASET_ROOT=/path/to/MuPNIT_30fps_global
+```
+
+The MuPNIT dataset should be in MOT format with the following structure:
 
 ```
 MuPNIT_30fps_global/
-├── train.json                    # COCO-format training annotations
-├── test.json                     # COCO-format test annotations
-├── short_split.json              # Short video split definitions
-├── long_split.json               # Long video split definitions
-├── short_MOTann_200/             # Short video sequences (MOT format)
+├── annotations/
+│   ├── train.json                # COCO-format training annotations
+│   ├── val.json                  # COCO-format validation annotations
+│   └── test.json                 # COCO-format test annotations
+├── train/                        # Training sequences
 │   └── <video_id>/
 │       ├── img1/                 # Frame images
-│       └── gt/gt.txt             # Ground truth annotations
-└── long_MOTann_10/               # Long video sequences (MOT format)
+│       ├── gt/gt.txt             # Ground truth annotations
+│       └── seqinfo.ini           # Sequence metadata
+├── val/                          # Validation sequences
+│   └── <video_id>/
+│       ├── img1/
+│       ├── gt/gt.txt
+│       └── seqinfo.ini
+└── test/                         # Test sequences (no ground truth)
     └── <video_id>/
         ├── img1/
-        └── gt/gt.txt
+        └── seqinfo.ini
 ```
 
 ### 3. Train
@@ -154,7 +166,7 @@ python tools/run_ocsort_mupnit_ReID.py \
     --expn MuPNIT_ReID \
     --only_eval \
     --yolo_model yolox_x \
-    --nsva
+    --mupnit
 ```
 
 ### Tracking + Player Identification (with ReID)
@@ -169,7 +181,7 @@ python tools/run_ocsort_mupnit_ReID.py \
     --expn MuPNIT_ReID_ID \
     --only_eval \
     --yolo_model yolox_x \
-    --nsva \
+    --mupnit \
     --id_level game \
     --reid_thresh 0.0 \
     --use_gallery \
@@ -236,13 +248,13 @@ Run after generating tracking results:
 python TrackIDEval/scripts/run_mot_challenge.py \
     --SPLIT_TO_EVAL test \
     --METRICS HOTA CLEAR Identity GlobalIDMetrics \
-    --GT_FOLDER /4TBSSD_Permanent/datasets/MuPNIT_30fps_global \
+    --GT_FOLDER $MUPNIT_DATASET_ROOT \
     --SKIP_SPLIT_FOL True \
     --TRACKERS_TO_EVAL <path-to-YOLOX_outputs>/MuPNIT_ReID \
     --TRACKER_SUB_FOLDER MuPNIT_ReID_val \
     --PLOT_CURVES False \
     --TRACKERS_FOLDER "" \
-    --SEQMAP_FILE /4TBSSD_Permanent/datasets/MuPNIT_30fps_global/seqmap_test.txt
+    --SEQMAP_FILE $MUPNIT_DATASET_ROOT/seqmap_test.txt
 ```
 
 Select any combination of metrics via the `--METRICS` flag (e.g., `--METRICS HOTA CLEAR Identity GlobalIDMetrics VACE IDEucl`).
@@ -281,7 +293,7 @@ python tools/demo_track_ocsortGL.py \
     --fp16 --fuse \
     --track_thresh 0.4 \
     --yolo_model yolox_x \
-    --nsva \
+    --mupnit \
     --id_level game \
     --feature_extractor CLIP \
     --reid_thresh 0.5 \
