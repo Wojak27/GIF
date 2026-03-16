@@ -248,13 +248,21 @@ Run after generating tracking results:
 python TrackIDEval/scripts/run_mot_challenge.py \
     --SPLIT_TO_EVAL test \
     --METRICS HOTA CLEAR Identity GlobalIDMetrics \
+<<<<<<< HEAD
     --GT_FOLDER $MUPNIT_DATASET_ROOT \
+=======
+    --GT_FOLDER <dataset_root>/MuPNIT_30fps_global \
+>>>>>>> 4e5eccb251643c8e0e6bbae542011d6637468e3b
     --SKIP_SPLIT_FOL True \
     --TRACKERS_TO_EVAL <path-to-YOLOX_outputs>/MuPNIT_ReID \
     --TRACKER_SUB_FOLDER MuPNIT_ReID_val \
     --PLOT_CURVES False \
     --TRACKERS_FOLDER "" \
+<<<<<<< HEAD
     --SEQMAP_FILE $MUPNIT_DATASET_ROOT/seqmap_test.txt
+=======
+    --SEQMAP_FILE <dataset_root>/MuPNIT_30fps_global/seqmap_test.txt
+>>>>>>> 4e5eccb251643c8e0e6bbae542011d6637468e3b
 ```
 
 Select any combination of metrics via the `--METRICS` flag (e.g., `--METRICS HOTA CLEAR Identity GlobalIDMetrics VACE IDEucl`).
