@@ -16,7 +16,8 @@ class Exp(MyExp):
         self.width = 1.25
         self.exp_name = os.path.split(os.path.realpath(__file__))[1].split(".")[0]
         self.train_ann = "train.json"
-        self.val_ann = "test.json"
+        self.val_ann = "val.json"  # Used when evaluating on validation split
+        self.test_ann = "test.json"  # Used when running inference on test split (--test)
         self.input_size = (720, 1280)
         self.test_size = (720, 1280)
         self.random_size = (18, 32)
@@ -96,7 +97,7 @@ class Exp(MyExp):
 
         valdataset = MOTDataset(
             data_dir=os.environ.get('MUPNIT_DATASET_ROOT', '/4TBSSD_Permanent/datasets/MuPNIT_30fps_global'),
-            json_file=self.val_ann,
+            json_file=self.test_ann if testdev else self.val_ann,
             img_size=self.test_size,
             name='',
             preproc=ValTransform(

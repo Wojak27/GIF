@@ -513,7 +513,7 @@ def embedding_distance(tracks_feat, detections_feat, metric='cosine'):
     :return: cost_matrix np.ndarray
     """
 
-    cost_matrix = np.zeros((len(tracks_feat), len(detections_feat)), dtype=np.float)
+    cost_matrix = np.zeros((len(tracks_feat), len(detections_feat)), dtype=float)
     if cost_matrix.size == 0:
         return cost_matrix
     # det_features = np.asarray([track.curr_feat for track in detections], dtype=np.float)    # [detection_num, emd_dim]

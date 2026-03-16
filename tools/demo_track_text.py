@@ -304,7 +304,7 @@ def imageflow_demo(predictor, vis_folder, current_time, args, attribute_dict=Non
     track_attributes = {}  # Store attributes for each track ID
     
     tracker = OCSORT_ReIDv1(args, det_thresh = args.track_thresh, iou_threshold=args.iou_thresh, asso_func=args.asso, delta_t=args.deltat, inertia=args.inertia)
-    encoder = CLIPReID(model_name="ViT-L/14")
+    encoder = CLIPReID(model_name="openai/clip-vit-large-patch14")
     timer = Timer()
     frame_id = 0
     results = []

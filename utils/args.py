@@ -79,6 +79,7 @@ def make_parser():
     parser.add_argument("--dataset", type=str, default="mupnit", help="mupnit")
     parser.add_argument("--video_name", type=str, default=None, help="Name of the demo video")
     parser.add_argument("--players_info_file", type=str, default=None, help="Path to players info file")
+    parser.add_argument("--rosters_file", type=str, default=None, help="Path to rosters JSON file for text attribute classification")
     
     
     

@@ -21,8 +21,15 @@ pretrained/
 *.pth
 *.pth.tar
 
+# Detection / embedding caches
+mupnit_cache_*/
+mupnit_detections_*/
+
 # Demo outputs
 demo_videos/*.mp4
+
+# Pickle files
+*.pkl
 
 # Jupyter
 .ipynb_checkpoints/

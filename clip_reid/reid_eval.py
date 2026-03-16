@@ -64,7 +64,8 @@ class CLIPReID(torch.nn.Module):
             pil_images.append(pil_img)
         # Batch preprocess all crops at once.
         inputs = self.preprocess(images=pil_images, return_tensors="pt").to(self.device)
-        features = self.model.get_image_features(**inputs).cpu()
+        with torch.no_grad():
+            features = self.model.get_image_features(**inputs).cpu()
         return features.squeeze(0) # shape: (#crops,dim)
 
 

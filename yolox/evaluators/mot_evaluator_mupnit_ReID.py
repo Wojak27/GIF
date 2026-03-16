@@ -19,7 +19,6 @@ from yolox.utils import (
     time_synchronized,
     xyxy2xywh
 )
-from trackers.byte_tracker.byte_tracker import BYTETracker
 from trackers.ocsort_tracker.ocsort_ReID import OCSortReID
 import numpy as np
 
@@ -134,7 +133,8 @@ class MOTEvaluator:
         track_time = 0
         n_samples = len(self.dataloader) - 1
 
-            
+
+        from trackers.byte_tracker.byte_tracker import BYTETracker
         tracker = BYTETracker(self.args)
         video_id = 0
         for cur_iter, (imgs, _, info_imgs, ids) in enumerate(
@@ -242,21 +242,23 @@ class MOTEvaluator:
         
         assert args.id_level in ["global", "game"], "id_level must be in ['global','game']"
         assert args.use_age_with_gl in [None,"youngest", "oldest"], "use_age_with_gl must be in [None,'youngest','oldest']"
-        assert args.use_text == False if args.id_level == "global" else True, "We currently only support gallery for the global mode"
-        assert args.use_text == False if args.feature_extractor == "ap3d" else True, "We do not support text with AP3D"
         id_level = args.id_level
         use_gallery = args.use_gallery
-        assert args.gallery_path != "", "Provide path to gallery features"
-        all_gallery_features = load_gallery_features(args.gallery_path)
         use_text = args.use_text
-        if use_text or id_level == "game":
-            assert args.text_path != "" if args.id_level == "game" else True, "Provide path to text features"
-            all_text_features = load_text_features(args.text_path)
-            all_gallery_features = group_gallery_like_text(all_gallery_features, all_text_features)
-        
-        evaluate_identification = False
-        if use_text == True or use_gallery == True:
-            evaluate_identification = True
+
+        evaluate_identification = use_text or use_gallery
+        all_gallery_features = {}
+        all_text_features = {}
+
+        if evaluate_identification:
+            assert args.use_text == False if args.id_level == "global" else True, "We currently only support gallery for the global mode"
+            assert args.use_text == False if args.feature_extractor == "ap3d" else True, "We do not support text with AP3D"
+            assert args.gallery_path != "", "Provide path to gallery features"
+            all_gallery_features = load_gallery_features(args.gallery_path)
+            if use_text or id_level == "game":
+                assert args.text_path != "" if args.id_level == "game" else True, "Provide path to text features"
+                all_text_features = load_text_features(args.text_path)
+                all_gallery_features = group_gallery_like_text(all_gallery_features, all_text_features)
             
         os.makedirs(cache_dir, exist_ok=True)
         # TODO half to amp_test

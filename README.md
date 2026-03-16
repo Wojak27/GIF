@@ -349,10 +349,13 @@ See the `reid/` directory for player re-identification benchmarks:
 If you use this code in your research, please cite:
 
 ```bibtex
-@inproceedings{gif2026wacv,
-  title={Advancing Player Identification and Tracking with Global ID Fusion},
-  booktitle={IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
-  year={2026}
+@InProceedings{Wojtulewicz_2026_WACV,
+    author    = {Wojtulewicz, Karol and Liu, Minxing and Carlsson, Niklas},
+    title     = {Advancing Player Identification and Tracking with Global ID Fusion (GIF)},
+    booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV)},
+    month     = {March},
+    year      = {2026},
+    pages     = {7269-7280}
 }
 ```
 

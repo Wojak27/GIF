@@ -204,7 +204,7 @@ def main(exp, args, num_gpu):
         decoder = None
         
     root_dir = os.environ.get('MUPNIT_DATASET_ROOT', '/4TBSSD_Permanent/datasets/MuPNIT_30fps_global')
-    split_type = 'val'
+    split_type = 'test' if args.test else 'val'
 
     gtfiles = get_gt_files(split_type, root_dir)
     gt = OrderedDict([(Path(f).parts[-3], mm.io.loadtxt(f, fmt='mot15-2D', min_confidence=1)) for f in gtfiles])
