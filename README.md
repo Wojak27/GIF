@@ -92,7 +92,7 @@ mkdir pretrained
 
 ### 2. Prepare the MuPNIT dataset
 
-> **Dataset access:** The MuPNIT and MuPNIT-ReID datasets are not publicly hosted. If you would like access to the datasets, please contact us.
+> **Dataset access:** [BaiduYun](https://pan.baidu.com/s/1F8zmO3_L4-G9rIxB8eXbbg?) with password bw6F. More access options coming soon.
 
 <p align="center">
   <img src="media/dataset_comparison_charts.png" width="550"/>
