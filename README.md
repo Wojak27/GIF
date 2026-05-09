@@ -92,7 +92,7 @@ mkdir pretrained
 
 ### 2. Prepare the MuPNIT dataset
 
-> **Dataset access:** [BaiduYun](https://pan.baidu.com/s/1F8zmO3_L4-G9rIxB8eXbbg?) with password *bw6F*. Alternatively, please contact Minxing Liu ([minxing.liu@liu.se](minxing.liu@liu.se)/[minxingliu8@gmail.com](minxingliu8@gmail.com)), or Niklas Carlsson ([niklas.carlsson@liu.se](niklas.carlsson@liu.se)) for access. More access options coming soon.
+> **Dataset access:** [BaiduYun](https://pan.baidu.com/s/1F8zmO3_L4-G9rIxB8eXbbg?) with password *bw6F*. Alternatively, please contact Minxing Liu ([minxing.liu@liu.se](minxing.liu@liu.se)/[minxingliu8@gmail.com](minxingliu8@gmail.com)), or Niklas Carlsson ([niklas.carlsson@liu.se](niklas.carlsson@liu.se)). More access options coming soon.
 
 <p align="center">
   <img src="media/dataset_comparison_charts.png" width="550"/>
